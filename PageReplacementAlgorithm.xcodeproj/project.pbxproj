@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		5FAAF1D9275EAF4300D580E0 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FAAF1D8275EAF4300D580E0 /* main.swift */; };
+		5FAAF1E0275EAF6400D580E0 /* VirtualPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FAAF1DF275EAF6400D580E0 /* VirtualPage.swift */; };
+		5FAAF1E2275EAF7200D580E0 /* PhysicalPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FAAF1E1275EAF7200D580E0 /* PhysicalPage.swift */; };
+		5FAAF1E4275EAF8600D580E0 /* MemoryManagementUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FAAF1E3275EAF8600D580E0 /* MemoryManagementUnit.swift */; };
+		5FAAF1E6275EAF9200D580E0 /* Process.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FAAF1E5275EAF9200D580E0 /* Process.swift */; };
+		5FAAF1E8275EB28300D580E0 /* Program.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FAAF1E7275EB28300D580E0 /* Program.swift */; };
+		5FAAF1EA275EB75700D580E0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FAAF1E9275EB75700D580E0 /* Constants.swift */; };
+		5FAAF1EC275EBA8F00D580E0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FAAF1EB275EBA8F00D580E0 /* Extensions.swift */; };
+		5FAAF1EE275EC09300D580E0 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FAAF1ED275EC09300D580E0 /* Logger.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +33,14 @@
 /* Begin PBXFileReference section */
 		5FAAF1D5275EAF4300D580E0 /* PageReplacementAlgorithm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PageReplacementAlgorithm; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FAAF1D8275EAF4300D580E0 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		5FAAF1DF275EAF6400D580E0 /* VirtualPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualPage.swift; sourceTree = "<group>"; };
+		5FAAF1E1275EAF7200D580E0 /* PhysicalPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicalPage.swift; sourceTree = "<group>"; };
+		5FAAF1E3275EAF8600D580E0 /* MemoryManagementUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryManagementUnit.swift; sourceTree = "<group>"; };
+		5FAAF1E5275EAF9200D580E0 /* Process.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Process.swift; sourceTree = "<group>"; };
+		5FAAF1E7275EB28300D580E0 /* Program.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Program.swift; sourceTree = "<group>"; };
+		5FAAF1E9275EB75700D580E0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		5FAAF1EB275EBA8F00D580E0 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		5FAAF1ED275EC09300D580E0 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +74,14 @@
 			isa = PBXGroup;
 			children = (
 				5FAAF1D8275EAF4300D580E0 /* main.swift */,
+				5FAAF1E7275EB28300D580E0 /* Program.swift */,
+				5FAAF1E3275EAF8600D580E0 /* MemoryManagementUnit.swift */,
+				5FAAF1E1275EAF7200D580E0 /* PhysicalPage.swift */,
+				5FAAF1E5275EAF9200D580E0 /* Process.swift */,
+				5FAAF1DF275EAF6400D580E0 /* VirtualPage.swift */,
+				5FAAF1E9275EB75700D580E0 /* Constants.swift */,
+				5FAAF1EB275EBA8F00D580E0 /* Extensions.swift */,
+				5FAAF1ED275EC09300D580E0 /* Logger.swift */,
 			);
 			path = PageReplacementAlgorithm;
 			sourceTree = "<group>";
@@ -120,7 +144,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5FAAF1E2275EAF7200D580E0 /* PhysicalPage.swift in Sources */,
+				5FAAF1E6275EAF9200D580E0 /* Process.swift in Sources */,
+				5FAAF1E4275EAF8600D580E0 /* MemoryManagementUnit.swift in Sources */,
+				5FAAF1E0275EAF6400D580E0 /* VirtualPage.swift in Sources */,
+				5FAAF1EE275EC09300D580E0 /* Logger.swift in Sources */,
+				5FAAF1EC275EBA8F00D580E0 /* Extensions.swift in Sources */,
+				5FAAF1EA275EB75700D580E0 /* Constants.swift in Sources */,
 				5FAAF1D9275EAF4300D580E0 /* main.swift in Sources */,
+				5FAAF1E8275EB28300D580E0 /* Program.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
