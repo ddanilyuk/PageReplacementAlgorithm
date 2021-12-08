@@ -18,15 +18,14 @@ final class Program {
     
     func start() {
         
-        print("\nNumber of processes: \(processes.count)\n")
+        Logger.shared.logStart(numberOfProcesses: processes.count)
+        
         currentProcess = processes.first
         
         while tick != Constants.programTicks {
             runMemoryCheckIfNeeded()
             currentProcess?.run()
-            currentProcess = tick % Constants.Process.quantDuration == 0
-                ? nextProcess()
-                : currentProcess
+            changeProcessIfNeeded()
             tick += 1
         }
         
@@ -50,6 +49,13 @@ final class Program {
             Logger.shared.logMemoryCheck()
             processes.forEach { $0.runMemoryCheck() }
         }
+    }
+    
+    func changeProcessIfNeeded() {
+        
+        currentProcess = tick % Constants.Process.quantDuration == 0
+            ? nextProcess()
+            : currentProcess
     }
     
     func nextProcess() -> Process? {

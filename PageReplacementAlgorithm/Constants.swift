@@ -12,7 +12,7 @@ struct Constants {
     /// Period for running memory check
     static let memoryCheckPeriod = 40
     
-    static let programTicks = 600
+    static let programTicks = 400
     
     // MARK: - MMU
     

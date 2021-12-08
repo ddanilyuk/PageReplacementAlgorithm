@@ -28,7 +28,7 @@ final class Process {
         self.workedTime = 0
         self.isFinished = false
         
-        virtualPages = Kernel.shared.generateVirtualMemory(for: self)
+        virtualPages = Kernel.shared.generateVirtualMemory()
         generateWorkingSet()
     }
     
@@ -45,6 +45,10 @@ final class Process {
     }
     
     func runMemoryCheck() {
+        
+        guard isFinished else {
+            return
+        }
         
         virtualPages.forEach { virtualPage in
             if virtualPage.r, let physicalPage = virtualPage.physicalPage {
@@ -65,8 +69,7 @@ final class Process {
         }
         
         guard let virtualPageToAccess = getVirtualPageToAccess() else {
-            assertionFailure("No virtual page to access")
-            return
+            fatalError("At least one virtual page must exists")
         }
         
         Double.random < Constants.Process.pageModifyProbability

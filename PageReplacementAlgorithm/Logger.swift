@@ -42,6 +42,11 @@ final class Logger {
         print("")
     }
     
+    func logStart(numberOfProcesses: Int) {
+        
+        print("\nNumber of processes: \(numberOfProcesses)\n")
+    }
+    
     func logPageFault(processId: Int) {
         
         pageFaults += 1

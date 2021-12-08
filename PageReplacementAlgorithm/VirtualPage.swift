@@ -21,8 +21,6 @@ final class VirtualPage {
     /// Modification bit
     var m: Bool
     
-    var processId: Int
-    
     /// Physical page num
     weak var physicalPage: PhysicalPage?
     
@@ -32,13 +30,11 @@ final class VirtualPage {
         p: Bool,
         r: Bool,
         m: Bool,
-        processId: Int,
         physicalPage: PhysicalPage? = nil
     ) {
         self.p = p
         self.r = r
         self.m = m
-        self.processId = processId
         self.physicalPage = physicalPage
     }
 }

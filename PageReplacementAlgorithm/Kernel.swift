@@ -17,23 +17,20 @@ final class Kernel {
     
     // MARK: - Public methods
     
-    func findFreePhysicalPage(
+    func pageFault(
         for process: Process
     ) -> PhysicalPage {
         
         // Check for free page
         if let freePhysicalPage = MMU.shared.freePhysicalPages.first {
             MMU.shared.freePhysicalPages.removeFirst()
-            MMU.shared.busyPhysicalPages.append(freePhysicalPage)
             Logger.shared.logFindPageFromFreeList(processId: process.id)
             return freePhysicalPage
         }
         
         // Check for unused and out of time to live page
-        for virtualPage in process.virtualPages {
-            guard let physicalPage = virtualPage.physicalPage else {
-                continue
-            }
+        for physicalPage in MMU.shared.physicalPages {
+            let virtualPage = physicalPage.virtualPage!
             let isReachedMaxTime = tick - physicalPage.tlu > Constants.WorkingSet.timeToLive
             if virtualPage.p && !virtualPage.r && isReachedMaxTime {
                 Logger.shared.logFindPageReachedMaxTime(processId: process.id)
@@ -42,10 +39,8 @@ final class Kernel {
         }
         
         // Check for oldest page
-        let oldestPhysicalPageUsed = MMU.shared.physicalPages.sorted(by: { $0.tlu < $1.tlu }).first!
-        
+        let oldestPhysicalPageUsed = MMU.shared.physicalPages.sorted { $0.tlu < $1.tlu }.first!
         if oldestPhysicalPageUsed.p, let virtualPage = oldestPhysicalPageUsed.virtualPage {
-            // I am not shore do i need to evict physical page using his virtualPage
             Logger.shared.logFindOldestPage(processId: process.id, with: oldestPhysicalPageUsed.tlu)
             return MMU.shared.evictPage(virtualPage: virtualPage, for: process)
         } else {
@@ -53,13 +48,13 @@ final class Kernel {
         }
     }
     
-    func generateVirtualMemory(for process: Process) -> [VirtualPage] {
+    func generateVirtualMemory() -> [VirtualPage] {
         
         let minNumber = Constants.MMU.virtualMemoryPages - Constants.MMU.deviationVirtualPages
         let maxNumber = Constants.MMU.virtualMemoryPages + Constants.MMU.deviationVirtualPages
         let numberOfPages = Int.random(in: minNumber...maxNumber)
         return (0..<numberOfPages).map { _ in
-            VirtualPage(p: false, r: false, m: false, processId: process.id, physicalPage: nil)
+            VirtualPage(p: false, r: false, m: false, physicalPage: nil)
         }
     }
 }

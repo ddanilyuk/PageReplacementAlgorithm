@@ -15,8 +15,7 @@ final class MemoryManagementUnit {
     
     let physicalPages: [PhysicalPage]
     var freePhysicalPages: [PhysicalPage] = []
-    var busyPhysicalPages: [PhysicalPage] = []
-        
+    
     // MARK: - Singletone
     
     static let shared = MemoryManagementUnit()
@@ -85,7 +84,7 @@ final class MemoryManagementUnit {
         }
         
         guard let physicalPage = virtualPage.physicalPage else {
-            fatalError("No physical page for this virtual page")
+            fatalError("Physical page must exists for this virtual page")
         }
         physicalPage.p = false
         physicalPage.virtualPage = nil
@@ -103,7 +102,7 @@ final class MemoryManagementUnit {
         for process: Process
     ) {
         
-        let physicalPage = Kernel.shared.findFreePhysicalPage(for: process)
+        let physicalPage = Kernel.shared.pageFault(for: process)
         
         physicalPage.p = true
         physicalPage.virtualPage = virtualPage
