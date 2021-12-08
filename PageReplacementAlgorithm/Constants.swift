@@ -12,7 +12,7 @@ struct Constants {
     /// Period for running memory check
     static let memoryCheckPeriod = 40
     
-    static let programTicks = 200
+    static let programTicks = 600
     
     // MARK: - MMU
     
@@ -33,7 +33,7 @@ struct Constants {
     struct Process {
         
         /// Initial number of processes
-        static let numberOfProcess = 3
+        static let numberOfProcess = 8
         
         /// Average process work time
         static let averageWorkTime = 36
@@ -59,7 +59,7 @@ struct Constants {
     struct WorkingSet {
     
         /// Number of pages in working set
-        static let pages = 4
+        static let pages = 2
         
         /// Probability of accessing a working set
         static let accessProbability = 0.9

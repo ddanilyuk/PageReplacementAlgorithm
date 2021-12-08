@@ -24,7 +24,9 @@ final class Program {
         while tick != Constants.programTicks {
             runMemoryCheckIfNeeded()
             currentProcess?.run()
-            currentProcess = nextProcess()
+            currentProcess = tick % Constants.Process.quantDuration == 0
+                ? nextProcess()
+                : currentProcess
             tick += 1
         }
         
@@ -37,7 +39,7 @@ final class Program {
         
         let minProcessTime = Constants.Process.averageWorkTime - Constants.Process.deviationTime
         let maxProcessTime = Constants.Process.averageWorkTime + Constants.Process.deviationTime
-        return (0...Constants.Process.numberOfProcess).map {
+        return (0..<Constants.Process.numberOfProcess).map {
             Process(id: $0, processTime: Int.random(in: minProcessTime...maxProcessTime))
         }
     }
@@ -51,6 +53,7 @@ final class Program {
     }
     
     func nextProcess() -> Process? {
-        return processes.randomElement()
+        
+        return processes.filter { !$0.isFinished }.randomElement()
     }
 }

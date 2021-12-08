@@ -28,7 +28,7 @@ final class Process {
         self.workedTime = 0
         self.isFinished = false
         
-        virtualPages = Kernel.shared.generateVirtualMemory()
+        virtualPages = Kernel.shared.generateVirtualMemory(for: self)
         generateWorkingSet()
     }
     
@@ -46,22 +46,44 @@ final class Process {
     
     func runMemoryCheck() {
         
-        //        MMU.shared.r
+        virtualPages.forEach { virtualPage in
+            if virtualPage.r, let physicalPage = virtualPage.physicalPage {
+                physicalPage.tlu = tick
+                virtualPage.r = false
+                virtualPage.m = false
+            }
+        }
+        generateWorkingSet()
     }
     
     // MARK: - Private methods
     
-
-    
     private func accessPage() {
         
-        guard Double.random > Constants.Process.pageAccessProbability else {
+        guard Double.random < Constants.Process.pageAccessProbability else {
+            return
+        }
+        
+        guard let virtualPageToAccess = getVirtualPageToAccess() else {
+            assertionFailure("No virtual page to access")
             return
         }
         
         Double.random < Constants.Process.pageModifyProbability
-            ? MMU.shared.modifyPage(for: self)
-            : MMU.shared.readPage(for: self)
+            ? MMU.shared.modifyPage(virtualPageToAccess, for: self)
+            : MMU.shared.readPage(virtualPageToAccess, for: self)
+    }
+    
+    private func getVirtualPageToAccess() -> VirtualPage? {
+        
+        if Double.random < Constants.WorkingSet.accessProbability {
+            Logger.shared.logWorkingSetPageAccess(processId: id)
+            return workingSet.randomElement()
+            
+        } else {
+            Logger.shared.logNonWorkingSetPageAccess(processId: id)
+            return noneWorkingSet.randomElement()
+        }
     }
     
     private func freeMemory() {

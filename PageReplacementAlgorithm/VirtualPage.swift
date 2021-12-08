@@ -9,16 +9,19 @@ import Foundation
 
 final class VirtualPage {
     
+    /// Used for hashing for working set
     let id = UUID()
     
     /// Presence bit
     var p: Bool
     
-    /// Reference bit
+    /// Reference bit (access bit)
     var r: Bool
     
     /// Modification bit
     var m: Bool
+    
+    var processId: Int
     
     /// Physical page num
     weak var physicalPage: PhysicalPage?
@@ -29,11 +32,13 @@ final class VirtualPage {
         p: Bool,
         r: Bool,
         m: Bool,
+        processId: Int,
         physicalPage: PhysicalPage? = nil
     ) {
         self.p = p
         self.r = r
         self.m = m
+        self.processId = processId
         self.physicalPage = physicalPage
     }
 }

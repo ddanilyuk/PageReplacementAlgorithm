@@ -25,6 +25,7 @@ final class Kernel {
         if let freePhysicalPage = MMU.shared.freePhysicalPages.first {
             MMU.shared.freePhysicalPages.removeFirst()
             MMU.shared.busyPhysicalPages.append(freePhysicalPage)
+            Logger.shared.logFindPageFromFreeList(processId: process.id)
             return freePhysicalPage
         }
         
@@ -35,27 +36,30 @@ final class Kernel {
             }
             let isReachedMaxTime = tick - physicalPage.tlu > Constants.WorkingSet.timeToLive
             if virtualPage.p && !virtualPage.r && isReachedMaxTime {
+                Logger.shared.logFindPageReachedMaxTime(processId: process.id)
                 return MMU.shared.evictPage(virtualPage: virtualPage, for: process)
             }
         }
         
         // Check for oldest page
-        let oldestPhysicalPage = MMU.shared.physicalPages.sorted(by: { $0.tlu > $1.tlu }).first!
-        if oldestPhysicalPage.p, let virtualPage = oldestPhysicalPage.virtualPage {
+        let oldestPhysicalPageUsed = MMU.shared.physicalPages.sorted(by: { $0.tlu < $1.tlu }).first!
+        
+        if oldestPhysicalPageUsed.p, let virtualPage = oldestPhysicalPageUsed.virtualPage {
             // I am not shore do i need to evict physical page using his virtualPage
+            Logger.shared.logFindOldestPage(processId: process.id, with: oldestPhysicalPageUsed.tlu)
             return MMU.shared.evictPage(virtualPage: virtualPage, for: process)
         } else {
-            return oldestPhysicalPage
+            return oldestPhysicalPageUsed
         }
     }
     
-    func generateVirtualMemory() -> [VirtualPage] {
+    func generateVirtualMemory(for process: Process) -> [VirtualPage] {
         
         let minNumber = Constants.MMU.virtualMemoryPages - Constants.MMU.deviationVirtualPages
         let maxNumber = Constants.MMU.virtualMemoryPages + Constants.MMU.deviationVirtualPages
         let numberOfPages = Int.random(in: minNumber...maxNumber)
-        return (0...numberOfPages).map { _ in
-            VirtualPage(p: false, r: false, m: false, physicalPage: nil)
+        return (0..<numberOfPages).map { _ in
+            VirtualPage(p: false, r: false, m: false, processId: process.id, physicalPage: nil)
         }
     }
 }
