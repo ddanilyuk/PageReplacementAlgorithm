@@ -40,3 +40,7 @@ extension String {
         return padding(toLength: length, withPad: " ", startingAt: 0)
     }
 }
+
+extension Collection {
+    func choose(_ n: Int) -> ArraySlice<Element> { shuffled().prefix(n) }
+}

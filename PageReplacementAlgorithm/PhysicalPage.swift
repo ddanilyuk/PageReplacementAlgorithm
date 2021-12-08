@@ -14,17 +14,17 @@ final class PhysicalPage {
     /// Presence bit
     var p: Bool
     
-    /// Virtual page number
-    var vp: VirtualPage?
+    /// Virtual page
+    weak var virtualPage: VirtualPage?
     
     /// Tick of last use
-    var tlu: Int?
+    var tlu: Int
     
     // MARK: - Lifecycle
     
     init(p: Bool, vp: VirtualPage? = nil, tlu: Int? = nil) {
         self.p = p
-        self.vp = vp
-        self.tlu = tlu
+        self.virtualPage = vp
+        self.tlu = tlu ?? 0
     }
 }

@@ -9,6 +9,8 @@ import Foundation
 
 final class VirtualPage {
     
+    let id = UUID()
+    
     /// Presence bit
     var p: Bool
     
@@ -19,7 +21,7 @@ final class VirtualPage {
     var m: Bool
     
     /// Physical page num
-    var physicalPageNum: Int?
+    weak var physicalPage: PhysicalPage?
     
     // MARK: - Lifecycle
     
@@ -27,11 +29,24 @@ final class VirtualPage {
         p: Bool,
         r: Bool,
         m: Bool,
-        physicalPageNum: Int? = nil
+        physicalPage: PhysicalPage? = nil
     ) {
         self.p = p
         self.r = r
         self.m = m
-        self.physicalPageNum = physicalPageNum
+        self.physicalPage = physicalPage
+    }
+}
+
+// MARK: - Hashable
+
+extension VirtualPage: Hashable {
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: VirtualPage, rhs: VirtualPage) -> Bool {
+        return lhs.id == rhs.id
     }
 }

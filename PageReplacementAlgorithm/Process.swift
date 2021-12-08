@@ -13,12 +13,12 @@ final class Process {
     
     /// Process ID
     let id: Int
-    
     var processTime: Int
-    
     var workedTime: Int
-    
     var isFinished: Bool
+    var virtualPages: [VirtualPage] = []
+    var workingSet: Set<VirtualPage> = []
+    var noneWorkingSet: Set<VirtualPage> = []
     
     // MARK: - Lifecycle
     
@@ -27,8 +27,9 @@ final class Process {
         self.processTime = processTime
         self.workedTime = 0
         self.isFinished = false
-                
-        MMU.shared.addProcess(self)
+        
+        virtualPages = Kernel.shared.generateVirtualMemory()
+        generateWorkingSet()
     }
     
     // MARK: - Public methods
@@ -36,14 +37,21 @@ final class Process {
     func run() {
         
         accessPage()
-        processTime += 1
+        workedTime += 1
         if processTime == workedTime {
             freeMemory()
             isFinished = true
         }
     }
     
+    func runMemoryCheck() {
+        
+        //        MMU.shared.r
+    }
+    
     // MARK: - Private methods
+    
+
     
     private func accessPage() {
         
@@ -52,13 +60,19 @@ final class Process {
         }
         
         Double.random < Constants.Process.pageModifyProbability
-            ? MMU.shared.modifyPage()
-            : MMU.shared.readPage()
+            ? MMU.shared.modifyPage(for: self)
+            : MMU.shared.readPage(for: self)
     }
     
     private func freeMemory() {
         
         MMU.shared.freeMemory(for: self)
+    }
+    
+    private func generateWorkingSet() {
+        
+        workingSet = Set(virtualPages.choose(Constants.WorkingSet.pages))
+        noneWorkingSet = Set(virtualPages).subtracting(workingSet)
     }
 }
 
@@ -68,15 +82,9 @@ extension Process: Hashable {
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
-//        hasher.combine(isFinished)
-//        hasher.combine(workedTime)
-//        hasher.combine(processTime)
     }
     
     static func == (lhs: Process, rhs: Process) -> Bool {
         return lhs.id == rhs.id
-//            && lhs.isFinished == rhs.isFinished
-//            && lhs.workedTime == rhs.workedTime
-//            && lhs.processTime == rhs.processTime
     }
 }

@@ -9,18 +9,48 @@ import Foundation
 
 final class Program {
     
+    // MARK: - Properties
+    
+    lazy var processes: [Process] = generateProcesses()
+    var currentProcess: Process?
+    
+    // MARK: - Lifecycle
+    
     func start() {
-        Logger.shared.logPageRead(processId: 1, tick: 1)
-        Logger.shared.logPageFault(processId: 2, tick: 2)
-        Logger.shared.logPageModification(processId: 2, tick: 2)
-        Logger.shared.logDirtyPageWriteToDisc(processId: 2, tick: 2)
-        Logger.shared.logWorkingSetPageAccess(processId: 2, tick: 2)
-        Logger.shared.logNonWorkingSetPageAccess(processId: 2, tick: 2)
-        Logger.shared.logReplacedUnusedPage(processId: 2, tick: 2)
-        Logger.shared.logReplacedOldestPage(processId: 2, tick: 2)
-        Logger.shared.logUsedFreePage(processId: 2, tick: 2)
-        Logger.shared.logFreeingMemory(processId: 2, tick: 2)
+        
+        print("\nNumber of processes: \(processes.count)\n")
+        currentProcess = processes.first
+        
+        while tick != Constants.programTicks {
+            runMemoryCheckIfNeeded()
+            currentProcess?.run()
+            currentProcess = nextProcess()
+            tick += 1
+        }
         
         Logger.shared.printStats()
+    }
+    
+    // MARK: - Private methods
+    
+    private func generateProcesses() -> [Process] {
+        
+        let minProcessTime = Constants.Process.averageWorkTime - Constants.Process.deviationTime
+        let maxProcessTime = Constants.Process.averageWorkTime + Constants.Process.deviationTime
+        return (0...Constants.Process.numberOfProcess).map {
+            Process(id: $0, processTime: Int.random(in: minProcessTime...maxProcessTime))
+        }
+    }
+    
+    func runMemoryCheckIfNeeded() {
+        
+        if tick % Constants.memoryCheckPeriod == 0 {
+            Logger.shared.logMemoryCheck()
+            processes.forEach { $0.runMemoryCheck() }
+        }
+    }
+    
+    func nextProcess() -> Process? {
+        return processes.randomElement()
     }
 }
