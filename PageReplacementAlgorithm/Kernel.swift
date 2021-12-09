@@ -50,8 +50,8 @@ final class Kernel {
     
     func generateVirtualMemory() -> [VirtualPage] {
         
-        let minNumber = Constants.MMU.virtualMemoryPages - Constants.MMU.deviationVirtualPages
-        let maxNumber = Constants.MMU.virtualMemoryPages + Constants.MMU.deviationVirtualPages
+        let minNumber = Constants.virtualMemoryPages - Constants.deviationVirtualPages
+        let maxNumber = Constants.virtualMemoryPages + Constants.deviationVirtualPages
         let numberOfPages = Int.random(in: minNumber...maxNumber)
         return (0..<numberOfPages).map { _ in
             VirtualPage(p: false, r: false, m: false, physicalPage: nil)

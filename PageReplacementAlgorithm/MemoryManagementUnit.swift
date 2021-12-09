@@ -21,7 +21,7 @@ final class MemoryManagementUnit {
     static let shared = MemoryManagementUnit()
     
     private init() {
-        physicalPages = (0..<Constants.MMU.physicalMemoryPages).map { _ in
+        physicalPages = (0..<Constants.physicalMemoryPages).map { _ in
             PhysicalPage(p: false, vp: nil, tlu: 1)
         }
         freePhysicalPages = physicalPages

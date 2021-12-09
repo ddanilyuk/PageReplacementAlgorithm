@@ -12,21 +12,17 @@ struct Constants {
     /// Period for running memory check
     static let memoryCheckPeriod = 40
     
+    /// Program ticks
     static let programTicks = 400
     
-    // MARK: - MMU
+    /// Number of pages in virtual memory for each process
+    static let virtualMemoryPages = 6
     
-    struct MMU {
-        
-        /// Number of pages in physical memory
-        static let physicalMemoryPages = 16
-        
-        /// Number of pages in virtual memory
-        static let virtualMemoryPages = 6
-        
-        /// Deviation of num of pages in virtual memory
-        static let deviationVirtualPages = 1
-    }
+    /// Deviation of num of pages in virtual memory
+    static let deviationVirtualPages = 1
+
+    /// Number of pages in physical memory
+    static let physicalMemoryPages = 16
     
     // MARK: - Process
     
@@ -49,9 +45,6 @@ struct Constants {
         
         /// Probability to modify page (else will be read)
         static let pageModifyProbability = 0.3
-        
-        /// Probability of new process appearance in each tick
-        static let pageAppearProbability = 0.03
     }
     
     // MARK: - WorkingSet
