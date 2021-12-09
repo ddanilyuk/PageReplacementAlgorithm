@@ -29,7 +29,6 @@ final class Process {
         self.isFinished = false
         
         virtualPages = Kernel.shared.generateVirtualMemory()
-        generateWorkingSet()
     }
     
     // MARK: - Public methods

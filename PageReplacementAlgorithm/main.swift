@@ -7,6 +7,6 @@
 
 import Foundation
 
-var tick: Int = 1
+var tick: Int = 0
 
 Program().start()
