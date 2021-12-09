@@ -19,7 +19,7 @@ struct Constants {
     struct MMU {
         
         /// Number of pages in physical memory
-        static let physicalMemoryPages = 12
+        static let physicalMemoryPages = 16
         
         /// Number of pages in virtual memory
         static let virtualMemoryPages = 6
@@ -36,7 +36,7 @@ struct Constants {
         static let numberOfProcess = 8
         
         /// Average process work time
-        static let averageWorkTime = 36
+        static let averageWorkTime = 40
         
         /// Process work time deviation
         static let deviationTime = 5
