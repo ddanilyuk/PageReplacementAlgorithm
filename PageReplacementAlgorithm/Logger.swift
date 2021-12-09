@@ -83,21 +83,6 @@ final class Logger {
         print("\("Non working set page access".padding(40)) | pid: \(processId.string.padding(2)) | tick: \(tick.string.padding(5))")
     }
     
-    func logReplacedUnusedPage(processId: Int) {
-        
-        print("\("Replaced unused page".padding(40)) | pid: \(processId.string.padding(2)) | tick: \(tick.string.padding(5))")
-    }
-    
-    func logReplacedOldestPage(processId: Int) {
-        
-        print("\("Replaced oldest page".padding(40)) | pid: \(processId.string.padding(2)) | tick: \(tick.string.padding(5))")
-    }
-    
-    func logUsedFreePage(processId: Int) {
-        
-        print("\("Used free page".padding(40)) | pid: \(processId.string.padding(2)) | tick: \(tick.string.padding(5))")
-    }
-    
     func logFreeingMemory(processId: Int) {
         
         print("\("Process ended, freeing memory".padding(40)) | pid: \(processId.string.padding(2)) | tick: \(tick.string.padding(5))")

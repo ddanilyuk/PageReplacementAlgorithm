@@ -14,7 +14,7 @@ final class MemoryManagementUnit {
     // MARK: - Properties
     
     let physicalPages: [PhysicalPage]
-    var freePhysicalPages: [PhysicalPage] = []
+    var freePhysicalPages: [PhysicalPage]
     
     // MARK: - Singletone
     
@@ -35,7 +35,8 @@ final class MemoryManagementUnit {
     ) {
         if !virtualPage.p {
             Logger.shared.logPageFault(processId: process.id)
-            loadPageToMemory(virtualPage: virtualPage, for: process)
+            let physicalPage = Kernel.shared.pageFault(for: process)
+            physicalPage.setPresenceVirtualPage(virtualPage)            
         }
         
         virtualPage.r = true
@@ -49,7 +50,8 @@ final class MemoryManagementUnit {
     ) {
         if !virtualPage.p {
             Logger.shared.logPageFault(processId: process.id)
-            loadPageToMemory(virtualPage: virtualPage, for: process)
+            let physicalPage = Kernel.shared.pageFault(for: process)
+            physicalPage.setPresenceVirtualPage(virtualPage)
         }
         
         virtualPage.m = true
@@ -58,58 +60,33 @@ final class MemoryManagementUnit {
         Logger.shared.logPageModification(processId: process.id)
     }
     
-    func freeMemory(for process: Process) {
-        
+    func freeMemory(
+        for process: Process
+    ) {
         Logger.shared.logFreeingMemory(processId: process.id)
         process.virtualPages.forEach { virtualPage in
             if virtualPage.p, let physicalPage = virtualPage.physicalPage {
-                physicalPage.p = false
-                physicalPage.virtualPage = nil
+                physicalPage.removePresenceVirtualPage()
                 physicalPage.tlu = tick
                 freePhysicalPages.append(physicalPage)
             }
         }
         process.virtualPages.removeAll()
     }
-    
-    // MARK: - Private methods
-    
+        
     func evictPage(
         virtualPage: VirtualPage,
         for process: Process
     ) -> PhysicalPage {
-        
         if virtualPage.m {
             Logger.shared.logDirtyPageWriteToDisc(processId: process.id)
         }
-        
         guard let physicalPage = virtualPage.physicalPage else {
             fatalError("Physical page must exists for this virtual page")
         }
-        physicalPage.p = false
-        physicalPage.virtualPage = nil
-        
-        virtualPage.p = false
+        physicalPage.removePresenceVirtualPage()
         virtualPage.r = false
         virtualPage.m = false
-        virtualPage.physicalPage = nil
-        
         return physicalPage
-    }
-    
-    private func loadPageToMemory(
-        virtualPage: VirtualPage,
-        for process: Process
-    ) {
-        
-        let physicalPage = Kernel.shared.pageFault(for: process)
-        
-        physicalPage.p = true
-        physicalPage.virtualPage = virtualPage
-        
-        virtualPage.p = true
-        virtualPage.r = false
-        virtualPage.m = false
-        virtualPage.physicalPage = physicalPage
     }
 }

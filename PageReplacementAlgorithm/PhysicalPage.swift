@@ -27,4 +27,22 @@ final class PhysicalPage {
         self.virtualPage = vp
         self.tlu = tlu ?? 0
     }
+    
+    // MARK: - Public methods
+    
+    /// Used for adding connection between `PhysicalPage` and `VirtualPage` and vice versa
+    func setPresenceVirtualPage(_ virtualPage: VirtualPage) {
+        self.virtualPage = virtualPage
+        self.p = true
+        self.virtualPage?.physicalPage = self
+        self.virtualPage?.p = true
+    }
+    
+    /// Used for removing connection between `PhysicalPage` and `VirtualPage` and vice versa
+    func removePresenceVirtualPage() {
+        self.virtualPage?.physicalPage = nil
+        self.virtualPage?.p = false
+        self.virtualPage = nil
+        self.p = false
+    }
 }

@@ -46,7 +46,7 @@ final class Process {
     
     func runMemoryCheck() {
         
-        guard isFinished else {
+        guard !isFinished else {
             return
         }
         
