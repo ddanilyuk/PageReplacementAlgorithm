@@ -40,7 +40,6 @@ final class MemoryManagementUnit {
         }
         
         virtualPage.r = true
-        virtualPage.physicalPage?.tlu = tick
         Logger.shared.logPageRead(processId: process.id)
     }
     
@@ -56,7 +55,6 @@ final class MemoryManagementUnit {
         
         virtualPage.m = true
         virtualPage.r = true
-        virtualPage.physicalPage?.tlu = tick
         Logger.shared.logPageModification(processId: process.id)
     }
     
@@ -67,7 +65,6 @@ final class MemoryManagementUnit {
         process.virtualPages.forEach { virtualPage in
             if virtualPage.p, let physicalPage = virtualPage.physicalPage {
                 physicalPage.removePresenceVirtualPage()
-                physicalPage.tlu = tick
                 freePhysicalPages.append(physicalPage)
             }
         }

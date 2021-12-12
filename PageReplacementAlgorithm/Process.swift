@@ -50,8 +50,7 @@ final class Process {
         }
         
         virtualPages.forEach { virtualPage in
-            if virtualPage.r, let physicalPage = virtualPage.physicalPage {
-                physicalPage.tlu = tick
+            if virtualPage.r {
                 virtualPage.r = false
                 virtualPage.m = false
             }

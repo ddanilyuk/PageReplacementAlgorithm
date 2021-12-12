@@ -30,9 +30,16 @@ final class Kernel {
         
         // Check for unused and out of time to live page
         for physicalPage in MMU.shared.physicalPages {
-            let virtualPage = physicalPage.virtualPage!
+            guard
+                physicalPage.p,
+                let virtualPage = physicalPage.virtualPage
+            else {
+                continue
+            }
             let isReachedMaxTime = tick - physicalPage.tlu > Constants.WorkingSet.timeToLive
-            if virtualPage.p && !virtualPage.r && isReachedMaxTime {
+            if virtualPage.r {
+                physicalPage.tlu = tick
+            } else if !virtualPage.r && isReachedMaxTime {
                 Logger.shared.logFindPageReachedMaxTime(processId: process.id)
                 return MMU.shared.evictPage(virtualPage: virtualPage, for: process)
             }

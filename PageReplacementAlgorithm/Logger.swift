@@ -100,7 +100,7 @@ final class Logger {
     
     func logFindPageReachedMaxTime(processId: Int) {
         
-        print("\("Find new physical page from free list".padding(40)) | pid: \(processId.string.padding(2)) | tick: \(tick.string.padding(5))")
+        print("\("Find page reached max time".padding(40)) | pid: \(processId.string.padding(2)) | tick: \(tick.string.padding(5))")
     }
     
     func logFindOldestPage(processId: Int, with tlu: Int) {
